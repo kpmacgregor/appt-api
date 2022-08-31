@@ -1,14 +1,16 @@
 package com.kpmacgregor.apptapi.domains.appointment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
+
+import com.kpmacgregor.apptapi.domains.topic.Topic;
+import com.kpmacgregor.apptapi.domains.topic.Topic_;
 
 public class AppointmentSpecifications {
 
@@ -21,6 +23,11 @@ public class AppointmentSpecifications {
                         titleIsIn(appointmentSearchCriteria.getTitles()).toPredicate(root, query, criteriaBuilder));
             }
 
+            if (Objects.nonNull(appointmentSearchCriteria.getTopics())) {
+                predicates.add(
+                        topicsMatch(appointmentSearchCriteria.getTopics()).toPredicate(root, query, criteriaBuilder));
+            }
+
             System.out.println(predicates);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
@@ -31,7 +38,9 @@ public class AppointmentSpecifications {
     }
 
     public static Specification<Appointment> topicsMatch(List<String> topics) {
-        // return (root, query, criteriaBuilder) -> ;
-        return null;
+        return (root, query, criteriaBuilder) -> {
+            Join<Appointment, Topic> appointmentTopics = root.join(Appointment_.TOPICS);
+            return criteriaBuilder.in(appointmentTopics.get(Topic_.NAME)).value(topics);
+        };
     }
 }

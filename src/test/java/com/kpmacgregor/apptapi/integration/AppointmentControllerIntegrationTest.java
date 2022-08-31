@@ -11,10 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kpmacgregor.apptapi.domains.appointment.Appointment;
 import com.kpmacgregor.apptapi.domains.topic.Topic;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
@@ -93,6 +91,28 @@ public class AppointmentControllerIntegrationTest {
                     .collect(Collectors.toList());
             assertTrue(intersection.size() > 0);
         }
+    }
 
+    @Test
+    public void getAppointmentsByTopics_WithMultipleTopics_ReturnsMatchingAppointments() throws Exception {
+        List<String> topics = Arrays.asList("java", "react");
+        String query = "?";
+        for (String topic : topics) {
+            query += "topics=" + topic + "&";
+        }
+
+        MvcResult result = this.mvc.perform(get("/appointments" + query))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<Appointment> resultList = mapper.readValue(json,
+                mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+
+        for (Appointment a : resultList) {
+            List<Topic> intersection = a.getTopics()
+                    .stream()
+                    .filter(topic -> topics.contains(topic.getName()))
+                    .collect(Collectors.toList());
+            assertTrue(intersection.size() > 0);
+        }
     }
 }
