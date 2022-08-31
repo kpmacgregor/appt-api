@@ -15,6 +15,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Override
+    public List<Appointment> filterAppointments(AppointmentSearchCriteria appointmentSearchCriteria) {
+        return appointmentRepository.findAll(
+                where(matchesFilters(appointmentSearchCriteria)));
+    }
+
+    @Override
     public List<Appointment> getByTitles(List<String> titles) {
         return appointmentRepository.findAll(
                 where(titleIsIn(titles))

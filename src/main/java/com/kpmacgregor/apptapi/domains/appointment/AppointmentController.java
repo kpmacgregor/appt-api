@@ -36,7 +36,9 @@ public class AppointmentController {
 
     @GetMapping
     public ResponseEntity<List<Appointment>> getAppointments(AppointmentSearchCriteria appointmentCriteria) {
-        List<Appointment> appointments = appointmentService.getByTitles(appointmentCriteria.getTitles());
+        // List<Appointment> appointments =
+        // appointmentService.getByTitles(appointmentCriteria.getTitles());
+        List<Appointment> appointments = appointmentService.filterAppointments(appointmentCriteria);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 

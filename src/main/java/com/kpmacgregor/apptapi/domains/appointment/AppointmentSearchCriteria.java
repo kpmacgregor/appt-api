@@ -1,9 +1,11 @@
 package com.kpmacgregor.apptapi.domains.appointment;
 
 import java.time.LocalDateTime;
+import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.List;
 
-public class AppointmentSearchCriteria {
+public class AppointmentSearchCriteria extends AbstractList<List<String>> {
     private List<String> titles;
     private List<String> topics;
 
@@ -26,6 +28,20 @@ public class AppointmentSearchCriteria {
     @Override
     public String toString() {
         return "AppointmentSearchCriteria [title=" + titles + ", topic=" + topics + "]";
+    }
+
+    @Override
+    public List<String> get(int arg0) {
+        List<List<String>> properties = Arrays.asList(
+                this.getTitles(),
+                this.getTopics());
+        return properties.get(arg0);
+    }
+
+    @Override
+    public int size() {
+        // TODO Auto-generated method stub
+        return 2;
     }
 
 }

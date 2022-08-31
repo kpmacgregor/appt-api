@@ -47,7 +47,7 @@ public class AppointmentFactory {
         String title = getTitle(pList);
         LocalDateTime sTime = getStartTime();
         LocalDateTime eTime = getEndTime(sTime);
-        Set<Topic> selectedTopics = getTopics(topics);
+        List<Topic> selectedTopics = getTopics(topics);
         String description = getDescription();
         return new Appointment(title, pList, selectedTopics, description, sTime, eTime);
     }
@@ -56,9 +56,9 @@ public class AppointmentFactory {
         return lipsumParagraphs.get(random.nextInt(lipsumParagraphs.size()));
     }
 
-    private static Set<Topic> getTopics(List<Topic> topics) {
+    private static List<Topic> getTopics(List<Topic> topics) {
         int nTopics = random.nextInt(topics.size());
-        Set<Topic> selectedTopics = new HashSet<>();
+        List<Topic> selectedTopics = new ArrayList<>();
         while (selectedTopics.size() < nTopics) {
             selectedTopics.add(topics.get(random.nextInt(topics.size())));
         }

@@ -20,7 +20,7 @@ public class Appointment extends BaseEntity {
     private List<Participant> participants;
 
     @ManyToMany
-    private Set<Topic> topics;
+    private List<Topic> topics;
 
     @Column(length = 2048)
     private String description;
@@ -30,7 +30,7 @@ public class Appointment extends BaseEntity {
     public Appointment() {
     }
 
-    public Appointment(String title, List<Participant> participants, Set<Topic> topics, String description,
+    public Appointment(String title, List<Participant> participants, List<Topic> topics, String description,
             LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.title = title;
         this.participants = participants;
@@ -56,11 +56,11 @@ public class Appointment extends BaseEntity {
         this.participants = participants;
     }
 
-    public Set<Topic> getTopics() {
+    public List<Topic> getTopics() {
         return topics;
     }
 
-    public void setTopics(Set<Topic> topics) {
+    public void setTopics(List<Topic> topics) {
         this.topics = topics;
     }
 
