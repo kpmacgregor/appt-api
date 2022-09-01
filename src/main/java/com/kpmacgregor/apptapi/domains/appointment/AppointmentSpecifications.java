@@ -9,6 +9,8 @@ import javax.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.kpmacgregor.apptapi.domains.participant.Participant;
+import com.kpmacgregor.apptapi.domains.participant.Participant_;
 import com.kpmacgregor.apptapi.domains.topic.Topic;
 import com.kpmacgregor.apptapi.domains.topic.Topic_;
 
@@ -28,6 +30,11 @@ public class AppointmentSpecifications {
                         topicsMatch(appointmentSearchCriteria.getTopics()).toPredicate(root, query, criteriaBuilder));
             }
 
+            if (Objects.nonNull(appointmentSearchCriteria.getNames())) {
+                predicates.add(
+                        anyNameIsIn(appointmentSearchCriteria.getNames()).toPredicate(root, query, criteriaBuilder));
+            }
+
             System.out.println(predicates);
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
@@ -41,6 +48,28 @@ public class AppointmentSpecifications {
         return (root, query, criteriaBuilder) -> {
             Join<Appointment, Topic> appointmentTopics = root.join(Appointment_.TOPICS);
             return criteriaBuilder.in(appointmentTopics.get(Topic_.NAME)).value(topics);
+        };
+    }
+
+    public static Specification<Appointment> firstNameIsIn(List<String> firstNames) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Appointment, Participant> appointmentParticipants = root.join(Appointment_.PARTICIPANTS);
+            return criteriaBuilder.in(appointmentParticipants.get(Participant_.FIRST_NAME)).value(firstNames);
+        };
+    }
+
+    public static Specification<Appointment> lastNameIsIn(List<String> lastNames) {
+        return (root, query, criteriaBuilder) -> {
+            Join<Appointment, Participant> appointmentParticipants = root.join(Appointment_.PARTICIPANTS);
+            return criteriaBuilder.in(appointmentParticipants.get(Participant_.LAST_NAME)).value(lastNames);
+        };
+    }
+
+    public static Specification<Appointment> anyNameIsIn(List<String> names) {
+        return (root, query, criteriaBuilder) -> {
+            return criteriaBuilder.or(
+                    firstNameIsIn(names).toPredicate(root, query, criteriaBuilder),
+                    lastNameIsIn(names).toPredicate(root, query, criteriaBuilder));
         };
     }
 }

@@ -24,6 +24,7 @@ public class Appointment extends BaseEntity {
 
     @Column(length = 2048)
     private String description;
+
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 

@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kpmacgregor.apptapi.domains.appointment.Appointment;
+import com.kpmacgregor.apptapi.domains.participant.Participant;
 import com.kpmacgregor.apptapi.domains.topic.Topic;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,17 @@ public class AppointmentControllerIntegrationTest {
         List<Appointment> resultList = mapper.readValue(json,
                 mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
         assertTrue(resultList.size() > 0);
+    }
+
+    @Test
+    public void getAppointmentsByTitles_WithNoMatches_ReturnsEmptyArray() throws Exception {
+        MvcResult result = this.mvc.perform(get("/appointments?titles=xxxxxxx"))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<Appointment> resultList = mapper.readValue(json,
+                mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+        assertEquals(0, resultList.size());
+
     }
 
     @Test
@@ -106,6 +118,86 @@ public class AppointmentControllerIntegrationTest {
         String json = result.getResponse().getContentAsString();
         List<Appointment> resultList = mapper.readValue(json,
                 mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+
+        for (Appointment a : resultList) {
+            List<Topic> intersection = a.getTopics()
+                    .stream()
+                    .filter(topic -> topics.contains(topic.getName()))
+                    .collect(Collectors.toList());
+            assertTrue(intersection.size() > 0);
+        }
+    }
+
+    @Test
+    public void getAppointmentsByParticipantName_WithSingleName_ReturnsMatchingAppointments() throws Exception {
+        List<String> names = Arrays.asList("Kyle");
+        String query = "?";
+        for (String name : names) {
+            query += "names=" + name + "&";
+        }
+
+        MvcResult result = this.mvc.perform(get("/appointments" + query))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<Appointment> resultList = mapper.readValue(json,
+                mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+
+        for (Appointment a : resultList) {
+            List<Participant> intersection = a.getParticipants()
+                    .stream()
+                    .filter(p -> names.contains(p.getFirstName()))
+                    .collect(Collectors.toList());
+            assertTrue(intersection.size() > 0);
+            assertEquals("Kyle", intersection.get(0).getFirstName());
+        }
+    }
+
+    @Test
+    public void getAppointmentsByParticipantName_WithMultipleNames_ReturnsMatchingAppointments() throws Exception {
+        List<String> names = Arrays.asList("Kyle", "Null");
+        String query = "?";
+        for (String name : names) {
+            query += "names=" + name + "&";
+        }
+
+        MvcResult result = this.mvc.perform(get("/appointments" + query))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<Appointment> resultList = mapper.readValue(json,
+                mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+
+        for (Appointment a : resultList) {
+            List<Participant> intersection = a.getParticipants()
+                    .stream()
+                    .filter(p -> names.contains(p.getFirstName()) || names.contains(p.getLastName()))
+                    .collect(Collectors.toList());
+            assertTrue(intersection.size() > 0);
+            assertTrue(intersection.get(0).getFirstName().equals("Kyle")
+                    || intersection.get(0).getLastName().equals("Null"));
+        }
+    }
+
+    @Test
+    public void getAppointmentsByTitleAndTopic_ReturnsMatchingAppointments() throws Exception {
+        List<String> titles = Arrays.asList("first", "second");
+        String query = "?";
+        for (String title : titles) {
+            query += "titles=" + title + "&";
+        }
+        List<String> topics = Arrays.asList("java", "react");
+        for (String topic : topics) {
+            query += "topics=" + topic + "&";
+        }
+
+        MvcResult result = this.mvc.perform(get("/appointments" + query))
+                .andReturn();
+        String json = result.getResponse().getContentAsString();
+        List<Appointment> resultList = mapper.readValue(json,
+                mapper.getTypeFactory().constructCollectionType(List.class, Appointment.class));
+
+        for (Appointment a : resultList) {
+            assertTrue(titles.contains(a.getTitle()));
+        }
 
         for (Appointment a : resultList) {
             List<Topic> intersection = a.getTopics()
