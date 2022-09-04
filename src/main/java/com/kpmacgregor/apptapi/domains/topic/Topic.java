@@ -1,6 +1,6 @@
 package com.kpmacgregor.apptapi.domains.topic;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ public class Topic {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "topics")
-    private Set<Appointment> appointments;
+    private List<Appointment> appointments;
 
     public Topic() {
     }
@@ -45,11 +45,11 @@ public class Topic {
         this.name = name;
     }
 
-    public Set<Appointment> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(Set<Appointment> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 

@@ -1,38 +1,20 @@
 package com.kpmacgregor.apptapi.domains.appointment;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+import lombok.Data;
+
+@Data
 public class AppointmentSearchCriteria {
     private List<String> titles;
     private List<String> topics;
-    private List<String> names;
-
-    public List<String> getTitles() {
-        return titles;
-    }
-
-    public void setTitles(List<String> titles) {
-        this.titles = titles;
-    }
-
-    public List<String> getTopics() {
-        return topics;
-    }
-
-    public void setTopics(List<String> topics) {
-        this.topics = topics;
-    }
-
-    @Override
-    public String toString() {
-        return "AppointmentSearchCriteria [title=" + titles + ", topic=" + topics + "]";
-    }
-
-    public List<String> getNames() {
-        return names;
-    }
-
-    public void setNames(List<String> names) {
-        this.names = names;
-    }
+    private List<String> participantNames;
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+    private List<LocalDateTime> after;
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+    private List<LocalDateTime> before;
 }

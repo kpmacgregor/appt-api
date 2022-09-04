@@ -22,16 +22,6 @@ public class AppointmentFactory {
             "Nibh nisl condimentum id venenatis a condimentum. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla. Lectus arcu bibendum at varius vel pharetra vel turpis nunc. Elementum facilisis leo vel fringilla est ullamcorper eget. Pellentesque massa placerat duis ultricies lacus sed. In metus vulputate eu scelerisque felis imperdiet proin. Diam maecenas sed enim ut sem viverra. Arcu dictum varius duis at consectetur lorem donec massa. Quisque sagittis purus sit amet volutpat. Venenatis urna cursus eget nunc scelerisque.",
             "Senectus et netus et malesuada fames ac turpis egestas integer. Aliquam nulla facilisi cras fermentum. Egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. Ac auctor augue mauris augue neque gravida in. Scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Integer eget aliquet nibh praesent tristique. Augue mauris augue neque gravida in fermentum. Justo laoreet sit amet cursus sit amet. Scelerisque fermentum dui faucibus in. Vel elit scelerisque mauris pellentesque pulvinar pellentesque. Non tellus orci ac auctor augue mauris augue. Volutpat sed cras ornare arcu dui.",
             "Nunc mattis enim ut tellus elementum sagittis vitae. Aliquet nec ullamcorper sit amet risus nullam eget felis eget. Elit eget gravida cum sociis natoque penatibus. Nulla posuere sollicitudin aliquam ultrices sagittis. Porttitor eget dolor morbi non arcu risus quis varius. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus. Tellus in metus vulputate eu scelerisque. Arcu dui vivamus arcu felis bibendum ut. Nascetur ridiculus mus mauris vitae ultricies leo integer malesuada nunc. Vulputate ut pharetra sit amet aliquam id diam. Nunc faucibus a pellentesque sit amet porttitor. In tellus integer feugiat scelerisque. Eget arcu dictum varius duis at. Justo donec enim diam vulputate ut pharetra sit amet. Mauris augue neque gravida in fermentum et sollicitudin.");
-    private static List<String> topicList = Arrays.asList(
-            "javascript",
-            "java",
-            "spring",
-            "c#",
-            "asp.net",
-            "html",
-            "css",
-            "react",
-            "canvas");
 
     public static List<Appointment> generateRandomAppointments(int numAppts, List<Participant> participants,
             List<Topic> topics) {

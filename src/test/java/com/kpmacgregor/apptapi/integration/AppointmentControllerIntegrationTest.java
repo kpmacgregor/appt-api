@@ -133,7 +133,7 @@ public class AppointmentControllerIntegrationTest {
         List<String> names = Arrays.asList("Kyle");
         String query = "?";
         for (String name : names) {
-            query += "names=" + name + "&";
+            query += "participantNames=" + name + "&";
         }
 
         MvcResult result = this.mvc.perform(get("/appointments" + query))
