@@ -44,7 +44,7 @@ public class DataLoader implements CommandLineRunner {
         List<Topic> savedTopics = topicRepository.findAll();
         logger.info("Loaded " + savedTopics.size() + " topics.");
 
-        List<Appointment> appointments = AppointmentFactory.generateRandomAppointments(100, savedParticipants,
+        List<Appointment> appointments = AppointmentFactory.generateRandomAppointments(50, savedParticipants,
                 savedTopics);
         appointments.get(0).setTitle("first");
         appointments.get(1).setTitle("second");
